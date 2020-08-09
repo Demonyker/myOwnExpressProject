@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 3001;
 const sqlite3 = require('sqlite3');
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
@@ -10,6 +10,27 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const client = require('redis').createClient();
 const helmet = require('helmet')
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
+
+// Connection URL
+const url = 'mongodb://localhost:27017';
+
+// Database Name
+const dbName = 'myproject';
+
+// Use connect method to connect to the server
+MongoClient.connect(url, {
+  useUnifiedTopology: true,  // установка опций
+  useNewUrlParser: true
+}, function(err, client) {
+  assert.equal(null, err);
+  console.log("Connected successfully to server");
+
+  const db = client.db(dbName);
+
+  client.close();
+});
 client.on('error', function (err) {
   console.log('Error ' + err);
 });
